@@ -43,11 +43,12 @@ const Button = ($: { icon: string; text: string; onClick: () => void }) => (
   </button>
 );
 
-const FileButton = ($: { icon: string; text: string; onSelectFile: (file: File) => void }) => (
+const FileButton = ($: { icon: string; text: string; accept: string; onSelectFile: (file: File) => void }) => (
   <label class="cursor-pointer flex flex-col items-center justify-center w-3em h-3em rounded-full border border-gray-400 bg-white hover:text-blue-500">
     <input
       hidden
       type="file"
+      accept={$.accept}
       onChange={(e) => {
         const file = e.currentTarget.files?.[0];
         if (file) {
@@ -65,7 +66,7 @@ const App = () => (
   <>
     <header class="flex items-center">
       <h1 class="flex-1">omotegaki</h1>
-      <FileButton icon={mdiFileUploadOutline} text="Import" onSelectFile={(file) => importCsv(file)} />
+      <FileButton icon={mdiFileUploadOutline} text="Import" accept=".csv" onSelectFile={(file) => importCsv(file)} />
       <div class="w-1" />
       <Button icon={mdiFileDownloadOutline} text="Export" onClick={() => exportAsCsv()} />
       <div class="w-8" />

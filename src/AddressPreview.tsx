@@ -103,15 +103,15 @@ const Addressee = ($: AddressModel) => {
   );
 };
 
-export const AddressPreview = ({ addresser, addressee }: { addresser: AddressModel; addressee: AddressModel }) => (
+export const AddressPreview = ($: { addresser: AddressModel; addressee: AddressModel }) => (
   <div class="relative bg-white" style="box-shadow: 0 0 2px #0002,1px 1px 4px #0002">
     <svg viewBox="0 0 100 148" width="100mm" height="148mm" class="absolute inset-0">
       <AddresserPostalCodeBackground />
       <AddresseePostalCodeBackground />
     </svg>
     <svg viewBox="0 0 100 148" width="100mm" height="148mm" class="omotegaki-preview">
-      <Addresser {...addresser} />
-      <Addressee {...addressee} />
+      <Addresser {...$.addresser} />
+      <Addressee {...$.addressee} />
     </svg>
   </div>
 );
