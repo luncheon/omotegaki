@@ -1,0 +1,37 @@
+{
+  "name": "omotegaki",
+  "version": "0.0.0",
+  "description": "",
+  "license": "UNLICENSED",
+  "private": true,
+  "prettier": {
+    "printWidth": 140,
+    "endOfLine": "lf",
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "scripts": {
+    "start": "node build.mjs --serve",
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
+    "@luncheon/esbuild-plugin-windicss": "^0.2.1",
+    "@types/jspreadsheet-ce": "^4.7.2",
+    "babel-preset-solid": "^1.2.6",
+    "esbuild": "^0.14.10",
+    "esbuild-plugin-babel": "^0.2.3",
+    "esbuild-plugin-pipe": "^0.2.0",
+    "prettier": "^2.5.1",
+    "ttf2woff2": "^4.0.4",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "@mdi/js": "^6.5.95",
+    "jspdf": "^2.5.0",
+    "jspreadsheet-ce": "^4.9.7",
+    "solid-js": "^1.2.6",
+    "svg2pdf.js": "^2.2.0"
+  }
+}

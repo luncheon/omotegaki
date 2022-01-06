@@ -1,0 +1,71 @@
+/* reset */
+
+:where(*, ::before, ::after) {
+  box-sizing: border-box;
+  flex: none;
+  border: 0 solid currentColor;
+}
+
+:where(*) {
+  margin: 0;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* font */
+
+@font-face {
+  font-family: cdc1c23d;
+  src: url(./genjyuugothic-20150607/GenJyuuGothic-Regular.woff2);
+}
+
+html {
+  font-family: cdc1c23d;
+}
+
+/* jspreadsheet */
+
+.jexcel > thead > tr > td,
+.jexcel > tbody > tr > td {
+  line-height: 1.25;
+  padding: 4px;
+}
+.jexcel > thead > tr > td {
+  text-align: center !important;
+}
+.jexcel > tbody > tr > td > textarea {
+  padding: 4px !important;
+  min-height: calc(2.5em + 8px) !important;
+}
+
+.jexcel > colgroup > col:first-child {
+  width: 60px !important;
+}
+
+.jexcel > colgroup > col[width='9999'] {
+  width: calc(100vw - 60px - 50px - 100px - 320px - 140px - 32px - 8px);
+}
+
+.jexcel_container,
+.jexcel_content {
+  padding: 0 !important;
+}
