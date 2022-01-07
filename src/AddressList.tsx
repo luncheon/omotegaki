@@ -3,7 +3,9 @@ import 'jspreadsheet-ce/dist/jspreadsheet.css';
 import 'jsuites/dist/jsuites.css';
 import { batch, createSignal, onCleanup, onMount } from 'solid-js';
 import { AddressModel } from './AddressModel';
-import { deleteControlCharacters, formatDate } from './util';
+
+const formatDate = (date: Date) => Intl.DateTimeFormat('ja-JP', { dateStyle: 'medium' }).format(date).replace(/\//g, '-');
+const deleteControlCharacters = (text: string) => text.replace(/\p{gc=Cc}/gu, (c) => (c === '\n' || c === '\r' || c === '\t' ? c : ''));
 
 const emptyAddress: AddressModel = Object.freeze({ postalCode: '', address: '', name: '' });
 const [getAddresser, setAddresser] = createSignal<AddressModel>(emptyAddress);
@@ -47,7 +49,7 @@ export const AddressList = () => {
       allowInsertColumn: false,
       allowDeleteColumn: false,
       autoIncrement: false,
-      minDimensions: [3, 10],
+      minDimensions: [3, 5],
       rows: [{ title: '差出人' }],
       columns: [
         { title: '無効', type: 'checkbox', width: 50 },

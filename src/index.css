@@ -55,6 +55,7 @@ html {
 .jexcel > tbody > tr > td > textarea {
   padding: 4px !important;
   min-height: calc(2.5em + 8px) !important;
+  text-align: inherit;
 }
 
 .jexcel > colgroup > col:first-child {
