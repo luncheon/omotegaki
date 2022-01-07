@@ -42,6 +42,10 @@ export const importCsv = async (csvFile: File) => {
 export const AddressList = () => {
   let element: HTMLDivElement;
   onMount(() => {
+    const rows: Record<string | number, { title: string }> = new Proxy(
+      {},
+      { get: (_, p) => ({ title: p === '0' ? '差出人' : `宛先${p as string}` }) },
+    );
     sheet = jspreadsheet(element, {
       csvFileName: `omotegaki-${formatDate(new Date())}`,
       about: false,
@@ -50,7 +54,7 @@ export const AddressList = () => {
       allowDeleteColumn: false,
       autoIncrement: false,
       minDimensions: [3, 5],
-      rows: [{ title: '差出人' }],
+      rows,
       columns: [
         { title: '無効', type: 'checkbox', width: 50 },
         { title: '郵便番号', width: 90 },
@@ -66,6 +70,12 @@ export const AddressList = () => {
       },
       onafterchanges: sync,
       onundo: sync,
+      ondeleterow: (_element, startRowIndex) => {
+        for (let i = startRowIndex; i < sheet.rows.length; i++) {
+          const node = sheet.rows[i]?.children[0];
+          node && (node.innerHTML = rows[i]!.title);
+        }
+      },
     });
     sheet.updateCell(0, 0, true);
 
