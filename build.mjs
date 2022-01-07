@@ -26,7 +26,11 @@ const options = {
   plugins: [
     {
       name: 'index.html',
-      setup: (build) => build.onStart(() => fs.copyFileSync(`${srcdir}index.html`, `${outdir}index.html`)),
+      setup: (build) =>
+        build.onStart(() => {
+          fs.copyFileSync(`${srcdir}index.html`, `${outdir}index.html`);
+          fs.copyFileSync(`${srcdir}404.html`, `${outdir}404.html`);
+        }),
     },
     pipe({
       filter: /\.tsx$/,
