@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "node build.mjs --serve",
-    "build": "node build.mjs"
+    "build": "node build.mjs && tsc -p ."
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",

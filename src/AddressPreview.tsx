@@ -1,8 +1,8 @@
 import { For } from 'solid-js';
 import { AddressModel } from './AddressModel';
 
-const addresserPostalCodePosition = { y: 122.5, w: 4, h: 6.5, xs: [5.2, 9.2, 13.2, 18.2, 22.2, 26.2, 30.2] };
-const addresseePostalCodePosition = { y: 12, w: 6.2, h: 8.6, xs: [44, 51, 58, 65.3, 72.2, 79.1, 86] };
+const addresserPostalCodePosition = { y: 122.5, w: 4, h: 6.5, xs: [5.2, 9.2, 13.2, 18.2, 22.2, 26.2, 30.2] } as const;
+const addresseePostalCodePosition = { y: 12, w: 6.2, h: 8.6, xs: [44, 51, 58, 65.3, 72.2, 79.1, 86] } as const;
 
 const calculateAddresserPosition = (addressee: AddressModel) => {
   const { y: bottom, w } = addresserPostalCodePosition;

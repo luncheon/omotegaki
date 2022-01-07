@@ -10,10 +10,11 @@
     "jsxImportSource": "solid-js",
     "strict": true,
     "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
     "newLine": "LF",
     "baseUrl": "."
   },
