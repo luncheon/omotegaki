@@ -1,30 +1,9 @@
 import { mdiFileDownloadOutline, mdiFileUploadOutline, mdiPrinterOutline } from '@mdi/js';
-import { jsPDF } from 'jspdf';
 import { For } from 'solid-js';
 import { render } from 'solid-js/web';
-import 'svg2pdf.js';
 import { AddressList, exportAsCsv, getAddressees, getAddresser, importCsv } from './AddressList';
 import { AddressPreview } from './AddressPreview';
-import './genjyuugothic-20150607/jspdf-GenJyuuGothic-Regular-normal.js';
 import './index.css';
-import { formatDate } from './util';
-
-const downloadPdf = async (svgs: Iterable<SVGSVGElement>) => {
-  const doc = new jsPDF({ putOnlyUsedFonts: true, unit: 'mm', format: [100, 148] });
-  doc.setFont('GenJyuuGothic-Regular', 'normal');
-
-  // svg2pdf.js による setFont() を無視します。
-  doc.setFont = () => doc;
-
-  let first = true;
-  for (const svg of svgs) {
-    first ? (first = false) : doc.addPage();
-    await doc.svg(svg);
-  }
-  await doc.save(`omotegaki-${formatDate(new Date())}.pdf`, {
-    returnPromise: true,
-  });
-};
 
 const Icon = ({ icon, size }: { icon: string; size?: number }) => (
   <svg viewBox="0 0 24 24" width={size ?? 24} height={size ?? 24} vertical-align="middle">
@@ -70,7 +49,11 @@ const App = () => (
       <div class="w-1" />
       <Button icon={mdiFileDownloadOutline} text="Export" onClick={() => exportAsCsv()} />
       <div class="w-8" />
-      <Button icon={mdiPrinterOutline} text="PDF" onClick={() => downloadPdf(document.querySelectorAll('svg.omotegaki-preview'))} />
+      <Button
+        icon={mdiPrinterOutline}
+        text="PDF"
+        onClick={() => import('./downloadPdf.js').then((m) => m.downloadPdf(document.querySelectorAll('svg.omotegaki-preview')))}
+      />
     </header>
     <div class="h-4" />
     <main>

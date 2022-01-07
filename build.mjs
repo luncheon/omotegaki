@@ -13,7 +13,7 @@ fs.rmSync(outdir, { recursive: true, force: true });
 fs.mkdirSync(outdir, { recursive: true });
 
 const options = {
-  entryPoints: [`${srcdir}index.tsx`],
+  entryPoints: [`${srcdir}index.tsx`, `${srcdir}downloadPdf.ts`],
   outdir,
   bundle: true,
   minify: true,
@@ -21,6 +21,7 @@ const options = {
   logLevel: 'info',
   resolveExtensions: ['.mjs', '.js', '.ts', '.tsx'],
   loader: { '.woff2': 'file' },
+  external: ['*/downloadPdf.js'],
   plugins: [
     {
       name: 'index.html',
