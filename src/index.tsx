@@ -1,4 +1,4 @@
-import { mdiFileDownloadOutline, mdiFileUploadOutline, mdiPrinterOutline } from '@mdi/js';
+import { mdiFileDownloadOutline, mdiFileUploadOutline, mdiGithub, mdiPrinterOutline } from '@mdi/js';
 import { For } from 'solid-js';
 import { render } from 'solid-js/web';
 import { AddressList, emptyAddress, exportAsCsv, getAddressees, getAddresser, importCsv } from './AddressList';
@@ -11,13 +11,26 @@ const Icon = ({ icon, size }: { icon: string; size?: number }) => (
   </svg>
 );
 
-const cssButton = 'flex flex-col items-center justify-center w-3em h-3em rounded-full border border-gray-400 bg-white hover:text-blue-500';
+const IconAndText = ($: { icon: string; text: string }) => (
+  <div class="flex flex-col items-center justify-center w-full h-full">
+    <Icon icon={$.icon} size={20} />
+    <span class="font-size-10px leading-none">{$.text}</span>
+  </div>
+);
+
+const cssButton =
+  'select-none p-0 w-3em h-3em rounded-full shadow drop-shadow shadow-gray-400 bg-white hover:text-blue-500 active:bg-blue-50';
 
 const Button = ($: { icon: string; text: string; onClick: () => void }) => (
-  <button type="button" class={cssButton} onClick={$.onClick}>
-    <Icon icon={$.icon} size={20} />
-    <span class="font-size-10px">{$.text}</span>
+  <button class={cssButton} type="button" onClick={$.onClick}>
+    <IconAndText icon={$.icon} text={$.text} />
   </button>
+);
+
+const LinkButton = ($: { icon: string; text: string; href: string; target?: '_blank' }) => (
+  <a class={`no-underline text-current ${cssButton}`} href={$.href} target={$.target}>
+    <IconAndText icon={$.icon} text={$.text} />
+  </a>
 );
 
 const FileButton = ($: { icon: string; text: string; accept: string; onSelectFile: (file: File) => void }) => (
@@ -34,17 +47,19 @@ const FileButton = ($: { icon: string; text: string; accept: string; onSelectFil
         e.currentTarget.value = '';
       }}
     />
-    <Icon icon={$.icon} size={20} />
-    <span class="font-size-10px">{$.text}</span>
+    <IconAndText icon={$.icon} text={$.text} />
   </label>
 );
 
 const App = () => (
   <>
     <header class="flex items-center">
-      <h1 class="flex-1">omotegaki.web.app</h1>
+      <h1>omotegaki.web.app</h1>
+      <div class="w-4" />
+      <LinkButton icon={mdiGithub} text="GitHub" target="_blank" href="https://github.com/luncheon/omotegaki" />
+      <div class="flex-1" />
       <FileButton icon={mdiFileUploadOutline} text="Import" accept=".csv" onSelectFile={(file) => importCsv(file)} />
-      <div class="w-1" />
+      <div class="w-2" />
       <Button icon={mdiFileDownloadOutline} text="Export" onClick={() => exportAsCsv()} />
       <div class="w-8" />
       <Button
