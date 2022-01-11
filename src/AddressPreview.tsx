@@ -61,7 +61,7 @@ const AddresseePostalCodeBackground = () => {
   const { y, w, h, xs } = addresseePostalCodePosition;
   return (
     <g fill="none" stroke={backgroundLineColor}>
-      <For each={xs}>{(x, i) => <rect x={x} y={y} width={w} height={h} stroke-width={i() < 4 ? 0.375 : 0.25} />}</For>
+      <For each={xs}>{(x, i) => <rect x={x} y={y} width={w} height={h} stroke-width={i() < 3 ? 0.375 : 0.25} />}</For>
       <line x1={xs[2] + w} x2={xs[3]} y1={y + h / 2} y2={y + h / 2} stroke-width={0.375} />
     </g>
   );

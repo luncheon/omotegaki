@@ -7,7 +7,7 @@ import { AddressModel } from './AddressModel';
 const formatDate = (date: Date) => Intl.DateTimeFormat('ja-JP', { dateStyle: 'medium' }).format(date).replace(/\//g, '-');
 const deleteControlCharacters = (text: string) => text.replace(/\p{gc=Cc}/gu, (c) => (c === '\n' || c === '\r' || c === '\t' ? c : ''));
 
-const emptyAddress: AddressModel = Object.freeze({ postalCode: '', address: '', name: '' });
+export const emptyAddress: AddressModel = Object.freeze({ postalCode: '', address: '', name: '' });
 const [getAddresser, setAddresser] = createSignal<AddressModel>(emptyAddress);
 const [getAddressees, setAddressees] = createSignal<readonly AddressModel[]>([]);
 
@@ -70,11 +70,13 @@ export const AddressList = () => {
       },
       onafterchanges: sync,
       onundo: sync,
+      onredo: sync,
       ondeleterow: (_element, startRowIndex) => {
         for (let i = startRowIndex; i < sheet.rows.length; i++) {
           const node = sheet.rows[i]?.children[0];
           node && (node.innerHTML = rows[i]!.title);
         }
+        sync();
       },
     });
     sheet.updateCell(0, 0, true);
