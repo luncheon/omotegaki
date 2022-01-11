@@ -1,7 +1,6 @@
 {
   "name": "omotegaki",
   "version": "0.0.0",
-  "description": "",
   "license": "UNLICENSED",
   "private": true,
   "prettier": {
@@ -12,7 +11,8 @@
   },
   "scripts": {
     "start": "node build.mjs --serve",
-    "build": "node build.mjs && tsc -p ."
+    "build": "node build.mjs && tsc -p .",
+    "emu": "firebase emulators:start"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",

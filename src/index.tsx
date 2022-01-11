@@ -16,7 +16,7 @@ const cssButton = 'flex flex-col items-center justify-center w-3em h-3em rounded
 const Button = ($: { icon: string; text: string; onClick: () => void }) => (
   <button type="button" class={cssButton} onClick={$.onClick}>
     <Icon icon={$.icon} size={20} />
-    <span style="font-size: 10px">{$.text}</span>
+    <span class="font-size-10px">{$.text}</span>
   </button>
 );
 
@@ -35,7 +35,7 @@ const FileButton = ($: { icon: string; text: string; accept: string; onSelectFil
       }}
     />
     <Icon icon={$.icon} size={20} />
-    <span style="font-size: 10px">{$.text}</span>
+    <span class="font-size-10px">{$.text}</span>
   </label>
 );
 
@@ -59,7 +59,7 @@ const App = () => (
         <AddressList />
       </section>
       <div class="h-4" />
-      <section class="grid gap-4" style="grid-template-columns:repeat(auto-fill,100mm)">
+      <section class="grid gap-4 grid-cols-[repeat(auto-fill,100mm)]">
         <For each={getAddressees()} fallback={<AddressPreview addresser={getAddresser()} addressee={emptyAddress} />}>
           {(addressee) => <AddressPreview addresser={getAddresser()} addressee={addressee} />}
         </For>

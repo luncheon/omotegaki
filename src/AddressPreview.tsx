@@ -104,7 +104,7 @@ const Addressee = ($: AddressModel) => {
 };
 
 export const AddressPreview = ($: { addresser: AddressModel; addressee: AddressModel }) => (
-  <div class="relative bg-white" style="box-shadow: 0 0 2px #0002,1px 1px 4px #0002">
+  <div class="relative bg-white shadow drop-shadow-md shadow-gray-400">
     <svg viewBox="0 0 100 148" width="100mm" height="148mm" class="absolute inset-0">
       <AddresserPostalCodeBackground />
       <AddresseePostalCodeBackground />

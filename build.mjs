@@ -4,7 +4,19 @@ import babel from 'esbuild-plugin-babel';
 import pipe from 'esbuild-plugin-pipe';
 import fs from 'fs';
 
-const windiCss = windiCssPlugin({ filter: /^$/, windiCssConfig: { prefixer: false } });
+const windiCss = windiCssPlugin({
+  filter: /^$/,
+  windiCssConfig: {
+    prefixer: false,
+    plugins: [
+      ({ addDynamic }) => {
+        addDynamic('font-size', ({ Utility, Style }) => Style.generate(Utility.class, { 'font-size': Utility.amount }), {
+          completions: 'font-size-{size}',
+        });
+      },
+    ],
+  },
+});
 
 const srcdir = 'src/';
 const outdir = 'public/';
