@@ -31,6 +31,14 @@ button {
   cursor: pointer;
 }
 
+/* centering body */
+
+body {
+  --body-width: min(100vw - 18px /* scrollbar */, 1280px);
+  width: var(--body-width);
+  margin: auto;
+}
+
 /* font */
 
 @font-face {
@@ -63,7 +71,7 @@ html {
 }
 
 .jexcel > colgroup > col[width='9999'] {
-  width: calc(100vw - 60px - 50px - 100px - 320px - 140px - 32px - 8px);
+  width: calc(var(--body-width) - 50px - 50px - 90px - 320px - 140px - 32px - 12px);
 }
 
 .jexcel_container,

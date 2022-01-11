@@ -74,7 +74,7 @@ const App = () => (
         <AddressList />
       </section>
       <div class="h-4" />
-      <section class="grid gap-4 grid-cols-[repeat(auto-fill,100mm)]">
+      <section class="grid gap-4 grid-cols-[repeat(auto-fill,300px)]">
         <For each={getAddressees()} fallback={<AddressPreview addresser={getAddresser()} addressee={emptyAddress} />}>
           {(addressee) => <AddressPreview addresser={getAddresser()} addressee={addressee} />}
         </For>
