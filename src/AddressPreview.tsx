@@ -42,6 +42,29 @@ const calculateAddresseePosition = (addressee: AddressModel) => {
 
 const backgroundLineColor = '#ed514e';
 
+const Decorations = () => {
+  return (
+    <g>
+      <text y={8} font-size="3" fill={backgroundLineColor}>
+        <tspan x={43}>郵</tspan>
+        <tspan x={49.2}>便</tspan>
+        <tspan x={55.4}>は</tspan>
+        <tspan x={61.6}>が</tspan>
+        <tspan x={67.8}>き</tspan>
+      </text>
+      <rect x={6.4} y={6.8} width={22.5} height={22} fill={backgroundLineColor} opacity={0.2} />
+      {[12, 14, 16, 18, 20, 22, 24].map((x) => (
+        <line x1={x} x2={x} y1={33} y2={56} stroke={backgroundLineColor} stroke-width="0.25" opacity={0.4} />
+      ))}
+      <circle cx={18} cy={44} r={7} fill="white" stroke={backgroundLineColor} stroke-width="0.25" stroke-opacity={0.4} />
+
+      <rect x={4.8} y={132} width={30} height={10} fill={backgroundLineColor} opacity={0.15} />
+      <rect x={37} y={132.125} width={24.6} height={9.75} fill="none" stroke={backgroundLineColor} stroke-width="0.25" />
+      <rect x={64} y={132} width={30} height={10} fill={backgroundLineColor} opacity={0.15} />
+    </g>
+  );
+};
+
 const AddresserPostalCodeBackground = () => {
   const { y, w, h, xs } = addresserPostalCodePosition;
   return (
@@ -90,7 +113,7 @@ const Addressee = ($: AddressModel) => {
     <>
       <text font-size={`${address.fontSize}px`}>
         <For each={address.lines}>
-          {(s, i) => <tspan x={30 + i() * address.fontSize} y={address.y + i() * address.lineHeight} children={s} />}
+          {(s, i) => <tspan x={35 + i() * address.fontSize} y={address.y + i() * address.lineHeight} children={s} />}
         </For>
       </text>
       <text font-size={`${name.fontSize}px`} text-anchor="end">
@@ -106,6 +129,7 @@ const Addressee = ($: AddressModel) => {
 export const AddressPreview = ($: { addresser: AddressModel; addressee: AddressModel }) => (
   <div class="relative bg-white shadow drop-shadow-md shadow-gray-400">
     <svg viewBox="0 0 100 148" class="absolute inset-0">
+      <Decorations />
       <AddresserPostalCodeBackground />
       <AddresseePostalCodeBackground />
     </svg>
