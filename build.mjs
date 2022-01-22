@@ -37,11 +37,12 @@ const options = {
   assetNames: '[name]',
   plugins: [
     {
-      name: 'index.html',
+      name: 'copy-assets',
       setup: (build) =>
         build.onStart(() => {
           fs.copyFileSync(`${srcdir}index.html`, `${outdir}index.html`);
           fs.copyFileSync(`${srcdir}404.html`, `${outdir}404.html`);
+          fs.copyFileSync(`${srcdir}favicon.svg`, `${outdir}favicon.svg`);
         }),
     },
     {
