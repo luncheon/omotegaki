@@ -1,5 +1,5 @@
-import { mdiFileDownloadOutline, mdiFileUploadOutline, mdiGithub, mdiPrinterOutline } from '@mdi/js';
-import { For } from 'solid-js';
+import { mdiFileDownloadOutline, mdiFileUploadOutline, mdiGithub } from '@mdi/js';
+import { createRenderEffect, createSignal, For, Show } from 'solid-js';
 import { render } from 'solid-js/web';
 import { AddressList, emptyAddress, exportAsCsv, getAddressees, getAddresser, importCsv } from './AddressList';
 import { AddressPreview } from './AddressPreview';
@@ -41,9 +41,7 @@ const FileButton = ($: { icon: string; text: string; accept: string; onSelectFil
       accept={$.accept}
       onChange={(e) => {
         const file = e.currentTarget.files?.[0];
-        if (file) {
-          $.onSelectFile(file);
-        }
+        file && $.onSelectFile(file);
         e.currentTarget.value = '';
       }}
     />
@@ -51,38 +49,76 @@ const FileButton = ($: { icon: string; text: string; accept: string; onSelectFil
   </label>
 );
 
-const App = () => (
-  <>
-    <header class="flex items-center">
-      <h1>omotegaki.web.app</h1>
-      <div class="w-4" />
-      <LinkButton icon={mdiGithub} text="GitHub" target="_blank" href="https://github.com/luncheon/omotegaki" />
-      <div class="flex-1" />
-      <FileButton icon={mdiFileUploadOutline} text="Import" accept=".csv" onSelectFile={(file) => importCsv(file)} />
-      <div class="w-2" />
-      <Button icon={mdiFileDownloadOutline} text="Export" onClick={() => exportAsCsv()} />
-      <div class="w-8" />
-      <Button
-        icon={mdiPrinterOutline}
-        text="PDF"
-        onClick={() => import('./downloadPdf.js').then((m) => m.downloadPdf(document.querySelectorAll('svg.omotegaki-preview')))}
-      />
-    </header>
-    <div class="h-4" />
-    <main>
-      <section>
-        <AddressList />
-      </section>
-      <div class="h-4" />
-      <section class="grid gap-4 grid-cols-[repeat(auto-fill,300px)]">
-        <For each={getAddressees()} fallback={<AddressPreview addresser={getAddresser()} addressee={emptyAddress} />}>
-          {(addressee) => <AddressPreview addresser={getAddresser()} addressee={addressee} />}
-        </For>
-      </section>
-    </main>
-  </>
+const Header = () => (
+  <header class="flex items-center">
+    <div class="text-center">
+      <h1 class="font-size-32px">おもてがき</h1>
+      <h2 class="font-size-15px -mt-2 tracking-wider">omotegaki.web.app</h2>
+    </div>
+    <div class="w-4" />
+    <LinkButton icon={mdiGithub} text="GitHub" target="_blank" href="https://github.com/luncheon/omotegaki" />
+    <div class="flex-1" />
+    <FileButton icon={mdiFileUploadOutline} text="Import" accept=".csv" onSelectFile={(file) => importCsv(file)} />
+    <div class="w-2" />
+    <Button icon={mdiFileDownloadOutline} text="Export" onClick={() => exportAsCsv()} />
+  </header>
 );
 
-document.body.className = 'p-4 bg-yellow-50';
+const PrintView = () => {
+  const [getUrl, setUrl] = createSignal<string>();
+  createRenderEffect(async () => {
+    const pdf = await import('./toPdf.js').then((m) => m.toPdf(document.querySelectorAll('svg.omotegaki-preview')));
+    setUrl(pdf.output('datauristring'));
+  });
+  return <iframe src={getUrl()} width="100%" height="100%" />;
+};
+
+const Tab = <Value extends string>($: {
+  name: string;
+  value: Value;
+  active?: boolean;
+  onActivate: (value: Value) => void;
+  children: any;
+}) => (
+  <label
+    class={`cursor-pointer w-16 pt-2px pb-1px text-center border-hex-ccc rounded-t ${
+      $.active ? 'border-l border-t border-r bg-white' : 'border-bottom'
+    }`}
+  >
+    <input hidden type="radio" name={$.name} value={$.value} checked={$.active} onChange={() => $.onActivate($.value)} />
+    {$.children}
+  </label>
+);
+
+const App = () => {
+  const [getActiveTab, setActiveTab] = createSignal<'edit' | 'print'>('edit');
+  return (
+    <>
+      <Header />
+      <div class="h-4" />
+      <div class="flex pl-2">
+        <Tab name="d41564b1" value="edit" active={getActiveTab() === 'edit'} onActivate={setActiveTab} children="編集" />
+        <Tab name="d41564b1" value="print" active={getActiveTab() === 'print'} onActivate={setActiveTab} children="印刷" />
+      </div>
+      <main class="flex-1">
+        <Show when={getActiveTab() === 'print'} children={<PrintView />} />
+        <div hidden={getActiveTab() !== 'edit'}>
+          <section>
+            <AddressList />
+          </section>
+          <div class="h-4" />
+          <section class="grid gap-4 grid-cols-[repeat(auto-fill,300px)]">
+            <For each={getAddressees()} fallback={<AddressPreview addresser={getAddresser()} addressee={emptyAddress} />}>
+              {(addressee) => <AddressPreview addresser={getAddresser()} addressee={addressee} />}
+            </For>
+          </section>
+          <div class="h-8" />
+        </div>
+      </main>
+    </>
+  );
+};
+
+document.body.className = 'p-4 bg-yellow-50 flex flex-col';
 
 render(() => <App />, document.body);

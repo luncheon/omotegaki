@@ -25,7 +25,12 @@ const sync = () => {
   rows &&
     batch(() => {
       setAddresser(rowToAddress(rows[0]));
-      setAddressees(rows.filter((row) => !row[0] && (row[1] || row[2] || row[3])).map(rowToAddress));
+      setAddressees(
+        rows
+          .slice(1)
+          .filter((row) => !row[0] && (row[1] || row[2] || row[3]))
+          .map(rowToAddress),
+      );
     });
 };
 
@@ -79,7 +84,6 @@ export const AddressList = () => {
         sync();
       },
     });
-    sheet.updateCell(0, 0, true);
 
     onCleanup(() => sheet.destroy());
   });

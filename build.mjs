@@ -25,8 +25,8 @@ fs.rmSync(outdir, { recursive: true, force: true });
 fs.mkdirSync(outdir, { recursive: true });
 
 const options = {
-  entryPoints: [`${srcdir}index.tsx`, `${srcdir}downloadPdf.ts`],
-  external: ['*/downloadPdf.js'],
+  entryPoints: [`${srcdir}index.tsx`, `${srcdir}toPdf.ts`],
+  external: ['*/toPdf.js'],
   outdir,
   bundle: true,
   minify: true,

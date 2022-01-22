@@ -59,7 +59,7 @@ const Decorations = () => {
       <circle cx={18} cy={44} r={7} fill="white" stroke={backgroundLineColor} stroke-width="0.25" stroke-opacity={0.4} />
 
       <rect x={4.8} y={132} width={30} height={10} fill={backgroundLineColor} opacity={0.15} />
-      <rect x={37} y={132.125} width={24.6} height={9.75} fill="none" stroke={backgroundLineColor} stroke-width="0.25" />
+      <rect x={37} y={132.125} width={24.6} height={9.75} fill="none" stroke={backgroundLineColor} stroke-width="0.25" opacity={0.4} />
       <rect x={64} y={132} width={30} height={10} fill={backgroundLineColor} opacity={0.15} />
     </g>
   );
