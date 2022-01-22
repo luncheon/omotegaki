@@ -44,6 +44,13 @@ const options = {
           fs.copyFileSync(`${srcdir}404.html`, `${outdir}404.html`);
         }),
     },
+    {
+      name: 'jspreadsheet-ce',
+      setup: (build) =>
+        build.onLoad({ filter: /\/jspreadsheet-ce\/dist\/index.js$/ }, (args) => ({
+          contents: fs.readFileSync(args.path, 'utf8').replace('//bossanova.uk/jspreadsheet/logo.png', ''),
+        })),
+    },
     pipe({
       filter: /\.tsx$/,
       plugins: [windiCss, babel({ config: { presets: ['@babel/preset-typescript', 'babel-preset-solid'] } })],
