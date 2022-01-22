@@ -19,7 +19,7 @@ const IconAndText = ($: { icon: string; text: string }) => (
 );
 
 const cssButton =
-  'select-none p-0 w-3em h-3em rounded-full shadow drop-shadow shadow-gray-400 bg-white hover:text-blue-500 active:bg-blue-50';
+  'select-none p-0 w-3em h-3em rounded-full shadow drop-shadow shadow-gray-400 bg-white hover:text-hex-ed514e active:text-hex-ed514e active:bg-hex-fdeded';
 
 const Button = ($: { icon: string; text: string; onClick: () => void }) => (
   <button class={cssButton} type="button" onClick={$.onClick}>
@@ -51,10 +51,10 @@ const FileButton = ($: { icon: string; text: string; accept: string; onSelectFil
 
 const Header = () => (
   <header class="flex items-center">
-    <div class="text-center">
+    <a class="text-center no-underline text-inherit" href="/">
       <h1 class="font-size-32px">おもてがき</h1>
-      <h2 class="font-size-15px -mt-2 tracking-wider">omotegaki.web.app</h2>
-    </div>
+      <h2 class="font-size-15px -mt-2 tracking-wider text-hex-ed514e">omotegaki.web.app</h2>
+    </a>
     <div class="w-4" />
     <LinkButton icon={mdiGithub} text="GitHub" target="_blank" href="https://github.com/luncheon/omotegaki" />
     <div class="flex-1" />
@@ -81,8 +81,8 @@ const Tab = <Value extends string>($: {
   children: any;
 }) => (
   <label
-    class={`cursor-pointer w-16 pt-2px pb-1px text-center border-hex-ccc rounded-t ${
-      $.active ? 'border-l border-t border-r bg-white' : 'border-bottom'
+    class={`w-16 pt-2px pb-1px text-center border-hex-ccc rounded-t ${
+      $.active ? 'border-l border-t border-r bg-white' : 'cursor-pointer border-bottom hover:text-hex-ed514e'
     }`}
   >
     <input hidden type="radio" name={$.name} value={$.value} checked={$.active} onChange={() => $.onActivate($.value)} />
