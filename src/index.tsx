@@ -1,5 +1,5 @@
 import { mdiFileDownloadOutline, mdiFileUploadOutline, mdiGithub } from '@mdi/js';
-import { createRenderEffect, createSignal, For, Show } from 'solid-js';
+import { createSignal, For, onCleanup, onMount, Show } from 'solid-js';
 import { render } from 'solid-js/web';
 import { AddressList, emptyAddress, exportAsCsv, getAddressees, getAddresser, importCsv } from './AddressList';
 import { AddressPreview } from './AddressPreview';
@@ -65,12 +65,14 @@ const Header = () => (
 );
 
 const PrintView = () => {
-  const [getUrl, setUrl] = createSignal<string>();
-  createRenderEffect(async () => {
+  let ref!: HTMLIFrameElement;
+  onMount(async () => {
     const pdf = await import('./toPdf.js').then((m) => m.toPdf(document.querySelectorAll('svg.omotegaki-preview')));
-    setUrl(pdf.output('datauristring'));
+    const objectUrl = URL.createObjectURL(pdf.output('blob'));
+    ref.src = `pdfjs/web/viewer.html?file=${objectUrl}`;
+    onCleanup(() => URL.revokeObjectURL(objectUrl));
   });
-  return <iframe src={getUrl()} width="100%" height="100%" />;
+  return <iframe ref={ref} class="border border-hex-ccc bg-white" width="100%" height="100%" />;
 };
 
 const Tab = <Value extends string>($: {

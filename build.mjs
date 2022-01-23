@@ -23,6 +23,7 @@ const outdir = 'public/';
 
 fs.rmSync(outdir, { recursive: true, force: true });
 fs.mkdirSync(outdir, { recursive: true });
+fs.cpSync('pdfjs-2.12.313-dist', `${outdir}/pdfjs`, { recursive: true });
 
 const options = {
   entryPoints: [`${srcdir}index.tsx`, `${srcdir}toPdf.ts`],
