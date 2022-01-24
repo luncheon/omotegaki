@@ -1,6 +1,5 @@
 const setViewport = () =>
-  (document.querySelector<HTMLMetaElement>('meta[name="viewport"]')!.content =
-    screen.width < 720 ? 'width=720,initial-scale=1' : 'width=device-width,initial-scale=1');
+  (document.querySelector<HTMLMetaElement>('meta[name="viewport"]')!.content = screen.width < 720 ? 'width=720' : 'width=device-width');
 addEventListener('orientationchange', setViewport);
 setViewport();
 
