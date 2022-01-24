@@ -79,6 +79,11 @@ html {
 .jexcel > colgroup > col[width='9999'] {
   width: calc(var(--body-width) - 50px - 50px - 90px - 320px - 140px - 32px - 12px);
 }
+@media (max-width: 768px) {
+  .jexcel > colgroup > col[width='9999'] {
+    width: 0;
+  }
+}
 
 .jexcel_container,
 .jexcel_content {

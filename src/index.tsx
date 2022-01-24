@@ -1,3 +1,8 @@
+const setViewport = () =>
+  screen.width < 720 && document.querySelector('meta[name="viewport"]')!.setAttribute('content', 'width=720,initial-scale=1');
+addEventListener('orientationchange', setViewport);
+setViewport();
+
 import { mdiFileDownloadOutline, mdiFileUploadOutline, mdiGithub } from '@mdi/js';
 import { createSignal, For, onCleanup, onMount, Show } from 'solid-js';
 import { render } from 'solid-js/web';
