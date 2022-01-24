@@ -42,6 +42,7 @@ const options = {
       setup: (build) =>
         build.onStart(() => {
           fs.copyFileSync(`${srcdir}index.html`, `${outdir}index.html`);
+          fs.copyFileSync(`${srcdir}viewer.html`, `${outdir}viewer.html`);
           fs.copyFileSync(`${srcdir}404.html`, `${outdir}404.html`);
           fs.copyFileSync(`${srcdir}favicon.svg`, `${outdir}favicon.svg`);
         }),

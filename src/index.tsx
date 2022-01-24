@@ -74,7 +74,7 @@ const PrintView = () => {
   onMount(async () => {
     const pdf = await import('./toPdf.js').then((m) => m.toPdf(document.querySelectorAll('svg.omotegaki-preview')));
     const objectUrl = URL.createObjectURL(pdf.output('blob'));
-    ref.src = `pdfjs/web/viewer.html?file=${objectUrl}`;
+    ref.src = `viewer.html?file=${objectUrl}`;
     onCleanup(() => URL.revokeObjectURL(objectUrl));
   });
   return <iframe ref={ref} class="border border-hex-ccc bg-white" width="100%" height="100%" />;
