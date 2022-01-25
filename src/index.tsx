@@ -69,10 +69,11 @@ const Header = () => (
   </header>
 );
 
+const toPdfModule = import('./toPdf.js');
 const PrintView = () => {
   let ref!: HTMLIFrameElement;
   onMount(async () => {
-    const pdf = await import('./toPdf.js').then((m) => m.toPdf(document.querySelectorAll('svg.omotegaki-preview')));
+    const pdf = await toPdfModule.then((m) => m.toPdf(document.querySelectorAll('svg.omotegaki-preview')));
     const objectUrl = URL.createObjectURL(pdf.output('blob'));
     ref.src = `viewer.html?file=${objectUrl}`;
     onCleanup(() => URL.revokeObjectURL(objectUrl));
