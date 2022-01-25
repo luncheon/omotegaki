@@ -1,6 +1,7 @@
 import jspreadsheet from 'jspreadsheet-ce';
 import 'jspreadsheet-ce/dist/jspreadsheet.css';
 import 'jsuites/dist/jsuites.css';
+import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { batch, createSignal, onCleanup, onMount } from 'solid-js';
 import { AddressModel } from './AddressModel';
 
@@ -21,17 +22,20 @@ const rowToAddress = (row: RowModel | undefined): AddressModel =>
 let sheet: jspreadsheet.JSpreadsheetElement;
 
 const sync = () => {
-  const rows = sheet?.getData() as RowModel[];
-  rows &&
-    batch(() => {
-      setAddresser(rowToAddress(rows[0]));
-      setAddressees(
-        rows
-          .slice(1)
-          .filter((row) => !row[0] && (row[1] || row[2] || row[3]))
-          .map(rowToAddress),
-      );
-    });
+  if (!sheet) {
+    return;
+  }
+  const rows = sheet.getData() as RowModel[];
+  batch(() => {
+    setAddresser(rowToAddress(rows[0]));
+    setAddressees(
+      rows
+        .slice(1)
+        .filter((row) => !row[0] && (row[1] || row[2] || row[3]))
+        .map(rowToAddress),
+    );
+  });
+  location.hash = '#' + compressToEncodedURIComponent(JSON.stringify(rows));
 };
 
 export const exportAsCsv = () => sheet?.download(true);
@@ -84,6 +88,19 @@ export const AddressList = () => {
         sync();
       },
     });
+
+    try {
+      const s = decompressFromEncodedURIComponent(location.hash.slice(1));
+      if (s) {
+        const rows = JSON.parse(s);
+        if (Array.isArray(rows) && rows.every((row) => Array.isArray(row))) {
+          sheet.setData(rows);
+          sync();
+        }
+      }
+    } catch (error) {
+      console.warn(error);
+    }
 
     onCleanup(() => sheet.destroy());
   });
