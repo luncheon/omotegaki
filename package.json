@@ -12,7 +12,7 @@
   "scripts": {
     "start": "node build.mjs --serve",
     "build": "node build.mjs && tsc -p .",
-    "emu": "firebase emulators:start"
+    "emu": "npm run build && firebase emulators:start"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",

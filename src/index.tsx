@@ -4,7 +4,7 @@ addEventListener('orientationchange', setViewport);
 setViewport();
 
 import { mdiFileDownloadOutline, mdiFileUploadOutline, mdiGithub } from '@mdi/js';
-import { createSignal, For, onCleanup, onMount, Show } from 'solid-js';
+import { createEffect, createSignal, For } from 'solid-js';
 import { render } from 'solid-js/web';
 import { AddressList, emptyAddress, exportAsCsv, getAddressees, getAddresser, importCsv } from './AddressList';
 import { AddressPreview } from './AddressPreview';
@@ -69,18 +69,6 @@ const Header = () => (
   </header>
 );
 
-const toPdfModule = import('./toPdf.js');
-const PrintView = () => {
-  let ref!: HTMLIFrameElement;
-  onMount(async () => {
-    const pdf = await toPdfModule.then((m) => m.toPdf(document.querySelectorAll('svg.omotegaki-preview')));
-    const objectUrl = URL.createObjectURL(pdf.output('blob'));
-    ref.src = `viewer.html?file=${objectUrl}`;
-    onCleanup(() => URL.revokeObjectURL(objectUrl));
-  });
-  return <iframe ref={ref} class="border border-hex-ccc bg-white" width="100%" height="100%" />;
-};
-
 const Tab = <Value extends string>($: {
   name: string;
   value: Value;
@@ -99,7 +87,16 @@ const Tab = <Value extends string>($: {
 );
 
 const App = () => {
+  const toPdfModule = import('./toPdf.js');
   const [getActiveTab, setActiveTab] = createSignal<'edit' | 'print'>('edit');
+  let iframeRef!: HTMLIFrameElement;
+  createEffect(async () => {
+    if (getActiveTab() === 'print') {
+      const { toPdf } = await toPdfModule;
+      const pdf = await toPdf(document.querySelectorAll('svg.omotegaki-preview'));
+      (iframeRef.contentWindow as any).PDFViewerApplication.open(pdf.output('arraybuffer'));
+    }
+  });
   return (
     <>
       <Header />
@@ -109,7 +106,13 @@ const App = () => {
         <Tab name="d41564b1" value="print" active={getActiveTab() === 'print'} onActivate={setActiveTab} children="印刷" />
       </div>
       <main class="flex-1">
-        <Show when={getActiveTab() === 'print'} children={<PrintView />} />
+        <iframe
+          ref={iframeRef}
+          src="viewer.html"
+          class="block border-hex-ccc bg-white"
+          width="100%"
+          height={getActiveTab() !== 'print' ? '0' : '100%'}
+        />
         <div hidden={getActiveTab() !== 'edit'}>
           <section>
             <AddressList />
