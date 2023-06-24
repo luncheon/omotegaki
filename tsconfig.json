@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "noEmit": true,
-    "target": "es2021",
-    "module": "es2020",
+    "target": "es2022",
+    "module": "es2022",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "isolatedModules": true,
@@ -18,8 +18,5 @@
     "newLine": "LF",
     "baseUrl": "."
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

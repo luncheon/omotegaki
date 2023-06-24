@@ -25,12 +25,14 @@ fs.rmSync(outdir, { recursive: true, force: true });
 fs.mkdirSync(outdir, { recursive: true });
 fs.cpSync('pdfjs-2.12.313-dist', `${outdir}/pdfjs`, { recursive: true });
 
+/** @type esbuild.BuildOptions */
 const options = {
   entryPoints: [`${srcdir}index.tsx`, `${srcdir}toPdf.ts`],
   external: ['*/toPdf.js'],
   outdir,
   bundle: true,
   minify: true,
+  target: 'es2022',
   format: 'esm',
   logLevel: 'info',
   resolveExtensions: ['.mjs', '.js', '.ts', '.tsx'],
@@ -64,7 +66,7 @@ const options = {
 };
 
 if (process.argv.includes('--serve')) {
-  esbuild.serve({ servedir: outdir }, options).then(console.log('http://localhost:8000'));
+  esbuild.context(options).then((ctx) => ctx.serve({ servedir: outdir }));
 } else {
   esbuild.build(options);
 }

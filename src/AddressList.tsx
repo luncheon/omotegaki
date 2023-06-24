@@ -12,14 +12,14 @@ export const emptyAddress: AddressModel = Object.freeze({ postalCode: '', addres
 const [getAddresser, setAddresser] = createSignal<AddressModel>(emptyAddress);
 const [getAddressees, setAddressees] = createSignal<readonly AddressModel[]>([]);
 
-export { getAddresser, getAddressees };
+export { getAddressees, getAddresser };
 
 type RowModel = [boolean, string, string, string];
 
 const rowToAddress = (row: RowModel | undefined): AddressModel =>
   row ? { postalCode: row[1].replace(/[^0-9]/g, ''), address: row[2], name: row[3] } : emptyAddress;
 
-let sheet: jspreadsheet.JSpreadsheetElement;
+let sheet: ReturnType<typeof jspreadsheet>;
 
 const sync = () => {
   if (!sheet) {
@@ -41,7 +41,9 @@ const sync = () => {
 export const exportAsCsv = () => sheet?.download(true);
 export const importCsv = async (csvFile: File) => {
   const csvString = await csvFile.text();
-  const rows = sheet?.parseCSV(csvString)?.slice(1) as undefined | RowModel[];
+  // jspreadsheet-ce@4.13.3 では parseCSV の型が間違っています。
+  // 修正 PR: https://github.com/jspreadsheet/ce/pull/1626
+  const rows = sheet?.parseCSV(csvString as any)?.slice(1) as undefined | RowModel[];
   if (rows) {
     sheet.setData(rows);
     sync();
