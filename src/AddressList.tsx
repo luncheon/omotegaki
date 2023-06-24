@@ -4,6 +4,7 @@ import 'jsuites/dist/jsuites.css';
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { batch, createSignal, onCleanup, onMount } from 'solid-js';
 import { AddressModel } from './AddressModel';
+import { addressFromPostalCode } from './addressFromPostalCode';
 
 const formatDate = (date: Date) => Intl.DateTimeFormat('ja-JP', { dateStyle: 'medium' }).format(date).replace(/\//g, '-');
 const deleteControlCharacters = (text: string) => text.replace(/\p{gc=Cc}/gu, (c) => (c === '\n' || c === '\r' || c === '\t' ? c : ''));
@@ -73,6 +74,12 @@ export const AddressList = () => {
         { title: '名前', width: 140, align: 'right', wordWrap: true },
         { title: '備考', width: 9999, align: 'left', wordWrap: true },
       ],
+      onchange: async (_element, _cell, colIndex, rowIndex, newValue, _oldValue) => {
+        if (colIndex === '1') {
+          const address = await addressFromPostalCode(newValue as string);
+          address && sheet.setValueFromCoords(2, +rowIndex, address);
+        }
+      },
       onbeforechange: (_element, _cell, _columnIndex, _rowIndex, value) => {
         if (typeof value === 'string') {
           value = deleteControlCharacters(value);
